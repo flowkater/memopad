@@ -26,14 +26,18 @@ class Authentication extends Component {
                     <input
                     name="username"
                     type="text"
-                    className="validate"/>
+                    className="validate"
+                    onChange={this.handleChange}
+                    value={this.state.username} />
                 </div>
                 <div className="input-field col s12">
                     <label>Password</label>
                     <input
                     name="password"
                     type="password"
-                    className="validate"/>
+                    className="validate"
+                    onChange={this.handleChange}
+                    value={this.state.password} />
                 </div>
             </div>
         );
