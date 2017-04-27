@@ -6,7 +6,7 @@ class Authentication extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: "",
+            email: "",
             password: ""
         };
         this.handleChange = this.handleChange.bind(this);
@@ -20,7 +20,7 @@ class Authentication extends Component {
     }
 
     handleLogin() {
-        let id = this.state.username;
+        let id = this.state.email;
         let pw = this.state.password;
 
         this.props.onLogin(id, pw).then(
@@ -37,14 +37,14 @@ class Authentication extends Component {
     render() {
         const inputBoxes = (
             <div>
-                <div className="input-field col s12 username">
-                    <label>Username</label>
+                <div className="input-field col s12 email">
+                    <label>Email</label>
                     <input
-                    name="username"
+                    name="email"
                     type="text"
                     className="validate"
                     onChange={this.handleChange}
-                    value={this.state.username} />
+                    value={this.state.email} />
                 </div>
                 <div className="input-field col s12">
                     <label>Password</label>

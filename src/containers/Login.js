@@ -15,16 +15,11 @@ class Login extends Component {
 
         return this.props.loginRequest(id, pw).then(() => {
             if (this.props.status === "SUCCESS") {
-                let loginData = {
-                    isLoggedIn: true,
-                    username: id
-                };
-
                 Materialize.toast('Welcome, ' + id + '!', 2000);
                 this.props.history.push('/');
                 return true;
             } else {
-                let $toastContent = $('<span style="color: #FFB4BA">Incorrect username or password</span>');
+                let $toastContent = $('<span style="color: #FFB4BA">Incorrect email or password</span>');
                 Materialize.toast($toastContent, 2000);
                 return false;
             }

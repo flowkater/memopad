@@ -1,23 +1,26 @@
 import { AUTH_LOGIN, AUTH_LOGIN_SUCCESS, AUTH_LOGIN_FAILURE } from './ActionTypes';
 import axios from 'axios';
+import Auth from '../modules/Auth';
 
 const res = axios.create({
-    baseURL: 'http://localhost:3001/',
+    baseURL: 'http://localhost:3001/api/',
     timeout: 10000,
-    withCredentials: true,
     headers: {
         'Accept': 'appliction/json',
         'Content-Type':'application/json'
     }
 });
 
-export function loginRequest(username, password) {
+export function loginRequest(email, password) {
     return (dispatch) => {
         dispatch(login());
 
-        return res.post('/signin', { username, password})
+        console.log("check");
+
+        return res.post('/signin', { email, password})
         .then((response) => {
-            dispatch(loginSuccess(username));
+            Auth.authenticateUser('token', response.data.auth_token);
+            dispatch(loginSuccess(email));
         }).catch((error) => {
             dispatch(loginFailure());
         });
@@ -31,10 +34,10 @@ export function login() {
     };
 }
 
-export function loginSuccess(username) {
+export function loginSuccess(email) {
     return {
         type: AUTH_LOGIN_SUCCESS,
-        username
+        email
     };
 }
 
