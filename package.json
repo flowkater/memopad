@@ -5,6 +5,7 @@
   "dependencies": {
     "axios": "^0.16.1",
     "css-loader": "^0.28.0",
+    "immutability-helper": "^2.1.2",
     "prop-types": "^15.5.8",
     "react": "^15.5.4",
     "react-addons-update": "^15.5.2",
