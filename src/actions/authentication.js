@@ -10,27 +10,7 @@ import {
     AUTH_GET_STATUS_FAILURE,
     AUTH_LOGOUT } from './ActionTypes';
 
-import axios from 'axios';
-import Auth from '../modules/Auth';
-
-const res = axios.create({
-    baseURL: 'http://localhost:3001/api/',
-    timeout: 10000,
-    headers: {
-        'Accept': 'appliction/json',
-        'Content-Type':'application/json'
-    }
-});
-
-const auth_res = axios.create({
-    baseURL: 'http://localhost:3001/api/',
-    timeout: 10000,
-    headers: {
-        'Accept': 'appliction/json',
-        'Content-Type':'application/json',
-        'Authorization': 'Bearer ' + Auth.getToken()
-    }
-});
+import { res, auth_res } from '../modules/Request';
 
 /* login actions */
 
@@ -47,8 +27,6 @@ export function loginRequest(email, password) {
 
     };
 }
-
-
 
 export function login() {
     return {
