@@ -11,6 +11,8 @@ class Authentication extends Component {
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleLogin = this.handleLogin.bind(this);
+        this.handleRegister = this.handleRegister.bind(this);
+        this.handleKeyPress = this.handleKeyPress.bind(this); 
     }
 
     handleChange(e){
@@ -20,10 +22,10 @@ class Authentication extends Component {
     }
 
     handleLogin() {
-        let id = this.state.email;
+        let email = this.state.email;
         let pw = this.state.password;
 
-        this.props.onLogin(id, pw).then(
+        this.props.onLogin(email, pw).then(
             (success) => {
                 if(!success) {
                     this.setState({
@@ -32,6 +34,32 @@ class Authentication extends Component {
                 }
             }
         );
+    }
+
+    handleRegister() {
+        let email = this.state.email;
+        let pw = this.state.password;
+
+        this.props.onRegister(email, pw).then(
+            (result) => {
+                if(!result) {
+                    this.setState({
+                        email: '',
+                        password: ''
+                    });
+                }
+            }
+        );
+    }
+
+    handleKeyPress(e) {
+        if(e.charCode === 13) {
+            if(this.props.mode) {
+                this.handleLogin();
+            }else {
+                this.handleRegister();
+            }
+        }
     }
 
     render() {
@@ -44,7 +72,8 @@ class Authentication extends Component {
                     type="text"
                     className="validate"
                     onChange={this.handleChange}
-                    value={this.state.email} />
+                    value={this.state.email}
+                    onKeyPress={this.handleKeyPress} />
                 </div>
                 <div className="input-field col s12">
                     <label>Password</label>
@@ -53,7 +82,8 @@ class Authentication extends Component {
                     type="password"
                     className="validate"
                     onChange={this.handleChange}
-                    value={this.state.password} />
+                    value={this.state.password}
+                    onKeyPress={this.handleKeyPress} />
                 </div>
             </div>
         );
@@ -84,7 +114,8 @@ class Authentication extends Component {
             <div className="card-content">
                 <div className="row">
                     {inputBoxes}
-                    <a className="waves-effect waves-light btn">CREATE</a>
+                    <a className="waves-effect waves-light btn"
+                        onClick={this.handleRegister}>CREATE</a>
                 </div>
             </div>
         );

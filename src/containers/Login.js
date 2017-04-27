@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Authentication } from '../components';
 import { connect } from 'react-redux';
 import { loginRequest } from '../actions/authentication';
+import Auth from '../modules/Auth';
+import { $, Materialize } from '../modules/Window'
 
 class Login extends Component {
     constructor(props){
@@ -9,13 +11,12 @@ class Login extends Component {
         this.handleLogin = this.handleLogin.bind(this);
     }
 
-    handleLogin(id, pw){
-        const $ = window.$;
-        const Materialize = window.Materialize;
+    handleLogin(email, pw){
+        return this.props.loginRequest(email, pw).then(() => {
+            if (this.props.login_status === "SUCCESS") {
+                Auth.authenticateUser(this.props.status.token);
 
-        return this.props.loginRequest(id, pw).then(() => {
-            if (this.props.status === "SUCCESS") {
-                Materialize.toast('Welcome, ' + id + '!', 2000);
+                Materialize.toast('Welcome, ' + email + '!', 2000);
                 this.props.history.push('/');
                 return true;
             } else {
@@ -38,14 +39,15 @@ class Login extends Component {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        status: state.authentication.login.status
+        login_status: state.authentication.login.status,
+        status: state.authentication.status
     }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        loginRequest: (id, pw) => {
-            return dispatch(loginRequest(id, pw));
+        loginRequest: (email, pw) => {
+            return dispatch(loginRequest(email, pw));
         }
     }
 }
