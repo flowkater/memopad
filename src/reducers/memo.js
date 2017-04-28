@@ -1,7 +1,7 @@
 import * as types from '../actions/ActionTypes';
 import update from 'immutability-helper';
 
-const initialState = {
+const memoInitialState = {
     post: {
         status: 'INIT',
         error: -1
@@ -15,7 +15,7 @@ const initialState = {
 
 export default function memo(state, action) {
     if( typeof state === "undefined" )
-        state = initialState;
+        state = memoInitialState;
 
     switch(action.type){
         case types.MEMO_POST:

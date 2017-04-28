@@ -1,7 +1,7 @@
 import * as types from '../actions/ActionTypes';
 import update from 'immutability-helper';
 
-const initialState = {
+const authInitialState = {
     login: {
         status: 'INIT'
     },
@@ -19,7 +19,7 @@ const initialState = {
 
 export default function authentication(state, action) {
     if( typeof state === "undefined")
-        state = initialState;
+        state = authInitialState;
 
     switch(action.type) {
         case types.AUTH_LOGIN:

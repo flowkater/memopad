@@ -9,7 +9,7 @@ class MemoList extends Component {
                 return (<Memo 
                             data={memo}
                             ownership={ (memo.writer === this.props.currentUser) }
-                            key={ memo._id }
+                            key={ memo.id }
                 />);
             });
         };
