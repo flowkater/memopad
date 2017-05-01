@@ -12,7 +12,8 @@ const authInitialState = {
     status: {
         valid: false,
         isLoggedIn: false,
-        token: ''
+        token: '',
+        userId: ''
     }
 };
 
@@ -35,7 +36,8 @@ export default function authentication(state, action) {
                 },
                 status: {
                     isLoggedIn: { $set: true },
-                    token: { $set: action.token }
+                    token: { $set: action.token },
+                    userId: { $set: action.userId }
                 }
             });
         case types.AUTH_LOGIN_FAILURE:
@@ -74,7 +76,8 @@ export default function authentication(state, action) {
             return update(state, {
                status: {
                    valid: { $set: true },
-                   token: { $set: action.token }
+                   token: { $set: action.token },
+                   userId: { $set: action.userId }
                } 
             });
         case types.AUTH_GET_STATUS_FAILURE:

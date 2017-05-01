@@ -20,7 +20,7 @@ export function loginRequest(email, password) {
 
         return res.post('/signin', { email, password})
         .then((response) => {
-            dispatch(loginSuccess(response.data.auth_token));
+            dispatch(loginSuccess(response.data.auth_token, response.data.account.id));
         }).catch((error) => {
             dispatch(loginFailure());
         });
@@ -34,10 +34,11 @@ export function login() {
     };
 }
 
-export function loginSuccess(token) {
+export function loginSuccess(token, userId) {
     return {
         type: AUTH_LOGIN_SUCCESS,
-        token
+        token,
+        userId
     };
 }
 
@@ -90,7 +91,7 @@ export function getStatusRequest() {
 
         return auth_res.get('/getinfo')
         .then((response) => {
-            dispatch(getStatusSuccess(response.data.auth_token));
+            dispatch(getStatusSuccess(response.data.auth_token, response.data.account.id));
         }).catch((error) => {
             console.log(error.response);
             dispatch(getStatusFailure());
@@ -104,10 +105,11 @@ export function getStatus() {
     };
 }
 
-export function getStatusSuccess(token) {
+export function getStatusSuccess(token, userId) {
     return {
         type: AUTH_GET_STATUS_SUCCESS,
-        token
+        token,
+        userId
     };
 }
 
