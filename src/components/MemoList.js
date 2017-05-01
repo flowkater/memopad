@@ -8,7 +8,7 @@ class MemoList extends Component {
             return data.map((memo, i) => {
                 return (<Memo 
                             data={memo}
-                            ownership={ (memo.writer === this.props.currentUser) }
+                            ownership={ (memo.account_id === this.props.currentUserId) }
                             key={ memo.id }
                 />);
             });
@@ -24,12 +24,12 @@ class MemoList extends Component {
 
 MemoList.propTypes = {
     data: PropTypes.array,
-    currentUser: PropTypes.string
+    currentUserId: PropTypes.number
 };
 
 MemoList.defaultProps = {
     data: [],
-    currentUser: ''
+    currentUserId: ''
 };
 
 

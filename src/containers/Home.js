@@ -44,12 +44,13 @@ class Home extends Component {
         return (
             <div className="wrapper">
                 { this.props.isLoggedIn ? <Write onPost={this.handlePost} /> : undefined }
-                <MemoList data={this.props.memoData} currentUser={this.props.currentUser} />
+                <MemoList data={this.props.memoData} currentUserId={this.props.currentUserId} />
             </div>
         );
     }
 
     componentDidMount() {
+        console.log("Home + cDM")
         this.props.memoListRequest(true).then(
             () => {
                 console.log(this.props.memoData);
@@ -63,7 +64,7 @@ const mapStateToProps = (state, ownProps) => {
     return {
         isLoggedIn: state.authentication.status.isLoggedIn,
         postStatus: state.memo.post,
-        currentUser: state.authentication.status.currentUser,
+        currentUserId: state.authentication.status.currentUserId,
         memoData: state.memo.list.data
     };
 };

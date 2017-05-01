@@ -13,7 +13,7 @@ const authInitialState = {
         valid: false,
         isLoggedIn: false,
         token: '',
-        userId: ''
+        currentUserId: -1
     }
 };
 
@@ -37,7 +37,7 @@ export default function authentication(state, action) {
                 status: {
                     isLoggedIn: { $set: true },
                     token: { $set: action.token },
-                    userId: { $set: action.userId }
+                    currentUserId: { $set: action.userId }
                 }
             });
         case types.AUTH_LOGIN_FAILURE:
@@ -77,7 +77,7 @@ export default function authentication(state, action) {
                status: {
                    valid: { $set: true },
                    token: { $set: action.token },
-                   userId: { $set: action.userId }
+                   currentUserId: { $set: action.userId }
                } 
             });
         case types.AUTH_GET_STATUS_FAILURE:
@@ -91,7 +91,8 @@ export default function authentication(state, action) {
             return update(state, {
                 status: {
                     isLoggedIn: { $set: false },
-                    token: { $set: '' }
+                    token: { $set: '' },
+                    currentUserId: { $set: -1 }
                 }
             });
         default:

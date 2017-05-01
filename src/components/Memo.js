@@ -9,10 +9,10 @@ class Memo extends Component {
 
         const dropDownMenu = (
             <div className="option-button">
-                <a className='dropdown-button' id={`dropdown-button-${data._id}`} data-activates={`dropdown-${data._id}`}>
+                <a className='dropdown-button' id={`dropdown-button-${data.id}`} data-activates={`dropdown-${data.id}`}>
                     <i className="material-icons icon-button">more_vert</i>
                 </a>
-                <ul id={`dropdown-${data._id}`} className='dropdown-content'>
+                <ul id={`dropdown-${data.id}`} className='dropdown-content'>
                     <li><a>Edit</a></li>
                     <li><a>Remove</a></li>
                 </ul>
@@ -22,7 +22,7 @@ class Memo extends Component {
         const memoView = (
             <div className="card">
                 <div className="info">
-                    <a className="username">{data.writer}</a> wrote a log · <TimeAgo date={data.date.created} />
+                    <a className="username">{data.writer}</a> wrote a log · <TimeAgo date={data.created_at} />
                     { ownership ? dropDownMenu : undefined }
                 </div>
                 <div className="card-content">
@@ -30,7 +30,7 @@ class Memo extends Component {
                 </div>
                 <div className="footer">
                     <i className="material-icons log-footer-icon star icon-button">star</i>
-                    <span className="star-count">{data.starred.length}</span>
+                    <span className="star-count"></span>
                 </div>
             </div>
         );
@@ -45,7 +45,7 @@ class Memo extends Component {
     componentDidUpdate() {
         // WHEN COMPONENT UPDATES, INITIALIZE DROPDOWN
         // (TRIGGERED WHEN LOGGED IN)
-        $('#dropdown-button-'+this.props.data._id).dropdown({
+        $('#dropdown-button-'+this.props.data.id).dropdown({
             belowOrigin: true // Displays dropdown below the button
         });
     }
@@ -53,7 +53,7 @@ class Memo extends Component {
     componentDidMount() {
         // WHEN COMPONENT MOUNTS, INITIALIZE DROPDOWN
         // (TRIGGERED WHEN REFRESHED)
-        $('#dropdown-button-'+this.props.data._id).dropdown({
+        $('#dropdown-button-'+this.props.data.id).dropdown({
             belowOrigin: true // Displays dropdown below the button
         });
     }
@@ -66,15 +66,12 @@ Memo.propTypes = {
 
 Memo.defaultProps = {
     data: {
-        _id: 'id1234567890',
+        id: 'id1234567890',
         writer: 'Writer',
         contetents: 'Contents',
         is_edited: false,
-        date: {
-            edited: new Date(),
-            created: new Date()
-        },
-        starred: []
+        updated_at: new Date(),
+        created_at: new Date()
     },
     ownership: true
 };
