@@ -9,14 +9,18 @@ class Home extends Component {
     constructor(props) {
         super(props);
         this.handlePost = this.handlePost.bind(this);
+        this.loadNewMemo = this.loadNewMemo.bind(this);
     }
 
     handlePost(contents){
         return this.props.memoPostRequest(contents).then(
             () => {
                 if(this.props.postStatus.status === "SUCCESS") {
-                    // TRIGGER LOAD NEW MEMO
-                    Materialize.toast('Success!', 2000);
+                    this.loadNewMemo().then(
+                        () => {
+                            Materialize.toast('Success!', 2000);
+                        }
+                    );
                 } else {
                     let $toastContent;
 
@@ -50,12 +54,37 @@ class Home extends Component {
     }
 
     componentDidMount() {
-        console.log("Home + cDM")
+        const loadMemoLoop = () => {
+            this.loadNewMemo().then(
+                () => {
+                    this.memoLoaderTimeoutId = setTimeout(loadMemoLoop, 5000);
+                }
+            );
+        };
+
         this.props.memoListRequest(true).then(
             () => {
-                console.log(this.props.memoData);
+                loadMemoLoop();
             }
         );
+    }
+
+    componentWillUnmount() {
+        clearTimeout(this.memoLoaderTimeoutId);
+    }
+    
+
+    loadNewMemo() {
+        /* Review 필요 */
+        if(this.props.listStatus === 'WAITING')
+            return new Promise((resolve, reject) => {
+                resolve();
+            });
+
+        if(this.props.memoData.length === 0)
+            return this.props.memoListRequest(true);        
+
+        return this.props.memoListRequest(false, 'after', this.props.memoData[0].id);
     }
     
 }
@@ -65,7 +94,8 @@ const mapStateToProps = (state, ownProps) => {
         isLoggedIn: state.authentication.status.isLoggedIn,
         postStatus: state.memo.post,
         currentUserId: state.authentication.status.currentUserId,
-        memoData: state.memo.list.data
+        memoData: state.memo.list.data,
+        listStatus: state.memo.list.status
     };
 };
 

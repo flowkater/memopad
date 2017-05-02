@@ -41,11 +41,18 @@ function memoPostFailure(error) {
     };
 }
 
-export function memoListRequest(isInitial, listType, id, username){
+export function memoListRequest(isInitial, listType, id, userEmail){
     return (dispatch) => {
         dispatch(memoList());
 
         let url = '/memos';
+
+        if(typeof userEmail === "undefined") {
+            // load public memo
+            url = isInitial ? url : `${url}?${listType}_id=${id}`;
+        } else {
+            // load specific memo
+        }
 
         return auth_res.get(url)
         .then((response) =>  {
