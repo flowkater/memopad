@@ -8,8 +8,14 @@ class Home extends Component {
 
     constructor(props) {
         super(props);
+
         this.handlePost = this.handlePost.bind(this);
         this.loadNewMemo = this.loadNewMemo.bind(this);
+        this.loadOldMemo = this.loadOldMemo.bind(this);
+
+        this.state = {
+            loadingState: false
+        };
     }
 
     handlePost(contents){
@@ -62,15 +68,46 @@ class Home extends Component {
             );
         };
 
+        const loadUntilScrollable = () => {
+            if($("body").height() < $(window).height()) {
+                this.loadOldMemo().then(
+                    () => {
+                        if(!this.props.isLast) {
+                            loadUntilScrollable();
+                        }
+                    }
+                );
+            }
+        };
+
         this.props.memoListRequest(true).then(
             () => {
+                loadUntilScrollable();
                 loadMemoLoop();
             }
         );
+
+        $(window).scroll(() => {
+            if($(document).height() - $(window).height() - $(window).scrollTop() < 250) {
+                if(!this.state.loadingState) {
+                    this.loadOldMemo();
+                    this.setState({
+                        loadingState: true
+                    });
+                }
+            } else {
+                if(this.state.loadingState) {
+                    this.setState({
+                        loadingState: false
+                    });
+                }
+            }
+        });
     }
 
     componentWillUnmount() {
         clearTimeout(this.memoLoaderTimeoutId);
+        $(window).unbind();
     }
     
 
@@ -86,6 +123,22 @@ class Home extends Component {
 
         return this.props.memoListRequest(false, 'after', this.props.memoData[0].id);
     }
+
+    loadOldMemo() {
+        if(this.props.isLast) {
+            return new Promise((resolve, reject) => {
+                resolve();
+            })
+        }
+
+        let lastId = this.props.memoData[this.props.memoData.length - 1].id;
+
+        return this.props.memoListRequest(false, 'before', lastId).then(() => {
+            if(this.props.isLast) {
+                Materialize.toast('You are reading the last page', 2000);
+            }
+        });
+    }
     
 }
 
@@ -95,7 +148,8 @@ const mapStateToProps = (state, ownProps) => {
         postStatus: state.memo.post,
         currentUserId: state.authentication.status.currentUserId,
         memoData: state.memo.list.data,
-        listStatus: state.memo.list.status
+        listStatus: state.memo.list.status,
+        isLast: state.memo.list.isLast
     };
 };
 
